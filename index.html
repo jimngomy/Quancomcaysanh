@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quán Cơm & Lẩu Mực Cây Sanh | Đại Lãnh</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,800;1,600&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            red: '#991B1B',       // Deep Crimson Red
+                            redhover: '#7F1D1D',
+                            gold: '#B45309',      // Warm Amber / Gold
+                            goldlight: '#FEF3C7',
+                            green: '#065F46',     // Deep Emerald / Cây Sanh Green
+                            greenlight: '#047857',
+                            lightbg: '#F8FAFC',
+                            cardbg: '#FFFFFF'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        serif: ['"Playfair Display"', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .hero-overlay {
+            background: linear-gradient(180deg, rgba(6, 95, 70, 0.4) 0%, rgba(15, 23, 42, 0.75) 100%);
+        }
+        /* Hiệu ứng nhịp tim cho nút Zalo nổi */
+        @keyframes pulse-zalo {
+            0% { box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.6); }
+            70% { box-shadow: 0 0 0 15px rgba(6, 182, 212, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(6, 182, 212, 0); }
+        }
+        .zalo-float-btn {
+            animation: pulse-zalo 2s infinite;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-brand-gold selection:text-white">
+
+    <!-- Header & Navigation -->
+    <header class="fixed top-0 left-0 w-full z-50 transition-all duration-300 glass-nav border-b border-emerald-900/10 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-11 h-11 rounded-full bg-gradient-to-tr from-brand-red via-brand-green to-brand-gold p-0.5 shadow-lg group-hover:scale-105 transition-transform duration-300">
+                    <div class="w-full h-full bg-white rounded-full flex items-center justify-center">
+                        <i class="fa-solid fa-tree text-brand-green text-xl"></i>
+                    </div>
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-serif font-bold text-xl tracking-wider text-brand-green group-hover:text-brand-gold transition-colors">CÂY SANH</span>
+                    <span class="text-[10px] tracking-[0.2em] text-brand-gold uppercase font-bold">Cơm Phần & Lẩu Mực</span>
+                </div>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <nav class="hidden md:flex items-center gap-8">
+                <a href="#about" class="text-sm font-semibold text-slate-700 hover:text-brand-green transition-colors">Về Chúng Tôi</a>
+                <a href="#flagship" class="text-sm font-semibold text-slate-700 hover:text-brand-green transition-colors">Đặc Sản</a>
+                <a href="#menu" class="text-sm font-semibold text-slate-700 hover:text-brand-green transition-colors">Thực Đơn</a>
+                <a href="#contact" class="text-sm font-semibold text-slate-700 hover:text-brand-green transition-colors">Liên Hệ & Bản Đồ</a>
+            </nav>
+
+            <!-- CTA Buttons -->
+            <div class="hidden sm:flex items-center gap-3">
+                <a href="https://zalo.me/0988220608" target="_blank" class="px-4 py-2.5 rounded-full bg-cyan-600 hover:bg-cyan-700 text-white font-semibold text-sm shadow-md transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-comment-dots"></i>
+                    <span>Zalo: 0988.220.608</span>
+                </a>
+                <button onclick="openBookingModal()" class="px-5 py-2.5 rounded-full bg-gradient-to-r from-brand-green to-brand-greenlight hover:opacity-90 text-white font-semibold text-sm shadow-lg shadow-brand-green/20 transition-all flex items-center gap-2">
+                    <i class="fa-regular fa-calendar-check text-amber-300"></i>
+                    <span>Đặt Bàn</span>
+                </button>
+            </div>
+
+            <!-- Mobile Hamburger Button -->
+            <button id="mobileMenuBtn" class="md:hidden text-slate-700 hover:text-brand-green focus:outline-none p-2">
+                <i class="fa-solid fa-bars text-2xl"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobileMenu" class="hidden md:hidden bg-white/95 border-b border-slate-200 px-6 py-4 space-y-4 shadow-lg">
+            <a href="#about" class="block text-slate-700 hover:text-brand-green font-medium py-1">Về Chúng Tôi</a>
+            <a href="#flagship" class="block text-slate-700 hover:text-brand-green font-medium py-1">Đặc Sản</a>
+            <a href="#menu" class="block text-slate-700 hover:text-brand-green font-medium py-1">Thực Đơn Lẩu Mực</a>
+            <a href="#contact" class="block text-slate-700 hover:text-brand-green font-medium py-1">Liên Hệ & Bản Đồ</a>
+            <div class="grid grid-cols-2 gap-2 pt-2">
+                <a href="https://zalo.me/0988220608" target="_blank" class="py-3 rounded-xl bg-cyan-600 text-white font-semibold text-center text-sm flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-comment-dots"></i> Zalo
+                </a>
+                <button onclick="openBookingModal()" class="py-3 rounded-xl bg-brand-green text-white font-semibold text-center text-sm flex items-center justify-center gap-2">
+                    <i class="fa-regular fa-calendar-check"></i> Đặt Bàn
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+        <!-- Background Image with Overlay -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&q=80&w=1920" 
+                 alt="Quán Cơm Lẩu Mực Cây Sanh" 
+                 class="w-full h-full object-cover object-center scale-105 transition-transform duration-10000">
+            <div class="absolute inset-0 hero-overlay"></div>
+        </div>
+
+        <!-- Hero Content -->
+        <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 text-center py-20 text-white">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/20 border border-amber-400/40 mb-6 backdrop-blur-md">
+                <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+                <span class="text-xs uppercase tracking-widest text-amber-300 font-bold">Điểm Dừng Chân Ẩm Thực Hàng Đầu Quốc Lộ 1A - Đại Lãnh</span>
+            </div>
+
+            <h1 class="font-serif text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight mb-6 leading-tight">
+                Hương Vị Lẩu Mực Đại Lãnh <br class="hidden sm:inline"/>
+                <span class="text-amber-300 drop-shadow-md">Đậm Đà Bản Sắc Miền Biển</span>
+            </h1>
+
+            <p class="max-w-2xl mx-auto text-base sm:text-lg text-slate-100 mb-10 leading-relaxed font-light">
+                Chuyên phục vụ cơm phần gia đình ấm cúng, đặc sản <strong class="text-white font-medium">Lẩu Mực tươi ngon</strong> và hải sản phong phú cho khách du lịch, xe khách tuyến Bắc - Nam.
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#menu" class="w-full sm:w-auto px-8 py-4 rounded-full bg-brand-green hover:bg-brand-greenlight text-white font-bold shadow-xl shadow-brand-green/30 hover:scale-105 transition-all duration-300 flex items-center justify-center gap-3">
+                    <i class="fa-solid fa-utensils text-amber-300"></i>
+                    <span>Khám Phá Thực Đơn</span>
+                </a>
+                <a href="https://zalo.me/0988220608" target="_blank" class="w-full sm:w-auto px-8 py-4 rounded-full bg-cyan-600 hover:bg-cyan-700 text-white font-bold shadow-xl shadow-cyan-600/30 hover:scale-105 transition-all duration-300 flex items-center justify-center gap-3">
+                    <i class="fa-solid fa-comment-dots text-white"></i>
+                    <span>Nhắn Zalo: 0988.220.608</span>
+                </a>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-16 pt-8 border-t border-white/20 text-left">
+                <div class="p-4 rounded-2xl bg-slate-900/60 border border-white/10 backdrop-blur-md">
+                    <div class="text-2xl sm:text-3xl font-bold text-amber-300 font-serif">100%</div>
+                    <div class="text-xs text-slate-300 mt-1">Hải Sản Tươi Sống Trong Ngày</div>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-900/60 border border-white/10 backdrop-blur-md">
+                    <div class="text-2xl sm:text-3xl font-bold text-amber-300 font-serif">#1</div>
+                    <div class="text-xs text-slate-300 mt-1">Đặc Sản Lẩu Mực Đại Lãnh</div>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-900/60 border border-white/10 backdrop-blur-md">
+                    <div class="text-2xl sm:text-3xl font-bold text-amber-300 font-serif">500+</div>
+                    <div class="text-xs text-slate-300 mt-1">Khách Phục Vụ Mỗi Ngày</div>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-900/60 border border-white/10 backdrop-blur-md">
+                    <div class="text-2xl sm:text-3xl font-bold text-amber-300 font-serif">24/7</div>
+                    <div class="text-xs text-slate-300 mt-1">Phục Vụ Xe Khách & Khách Đoàn</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 bg-white border-y border-slate-200 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                
+                <!-- Left Column - Content -->
+                <div class="space-y-6">
+                    <div class="inline-flex items-center gap-2 text-brand-green font-bold text-sm tracking-widest uppercase">
+                        <i class="fa-solid fa-store"></i>
+                        <span>Về Quán Cơm & Lẩu Mực Cây Sanh</span>
+                    </div>
+                    
+                    <h2 class="font-serif text-3xl sm:text-4xl font-bold text-slate-900 leading-tight">
+                        Điểm Dừng Chân Ấm Cúng & Trọn Vị Biển Tại <span class="text-brand-green">Đại Lãnh</span>
+                    </h2>
+
+                    <p class="text-slate-600 leading-relaxed">
+                        Tọa lạc ngay dưới chân Đèo Cổ Mã (Quốc lộ 1A, Đại Lãnh), <strong class="text-slate-900">Quán Cơm & Lẩu Mực Cây Sanh</strong> là địa chỉ quen thuộc của du khách gần xa, tài xế đường dài và các đoàn du lịch Bắc - Nam.
+                    </p>
+
+                    <p class="text-slate-500 leading-relaxed text-sm">
+                        Chúng tôi tự hào phục vụ những bữa cơm gia đình đậm đà hương vị truyền thống cùng đặc sản <em class="text-brand-green font-semibold">Lẩu Mực Đại Lãnh</em> trứ danh với nguyên liệu mực tươi rói đánh bắt trực tiếp từ vùng biển địa phương mỗi ngày.
+                    </p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
+                        <div class="p-4 rounded-xl bg-emerald-50/50 border border-emerald-100 flex gap-4 items-start">
+                            <div class="w-10 h-10 rounded-lg bg-brand-green text-white flex items-center justify-center shrink-0 shadow-md">
+                                <i class="fa-solid fa-bowl-food text-lg"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-900">Cơm Phần Gia Đình</h4>
+                                <p class="text-xs text-slate-600 mt-1">Đa dạng món ăn dân dã, thơm ngon chuẩn vị quê nhà.</p>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-xl bg-amber-50/50 border border-amber-100 flex gap-4 items-start">
+                            <div class="w-10 h-10 rounded-lg bg-brand-gold text-white flex items-center justify-center shrink-0 shadow-md">
+                                <i class="fa-solid fa-fish text-lg"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-900">Hải Sản Tươi Sống</h4>
+                                <p class="text-xs text-slate-600 mt-1">Tuyển chọn khắt khe, chế biến trực tiếp theo yêu cầu.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column - Visual Grid -->
+                <div class="relative">
+                    <div class="grid grid-cols-2 gap-4">
+                        <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&q=80&w=600" 
+                             alt="Ẩm thực biển" 
+                             class="rounded-2xl shadow-xl w-full h-64 object-cover hover:scale-[1.02] transition-transform duration-300 border border-slate-200">
+                        <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&q=80&w=600" 
+                             alt="Không gian quán" 
+                             class="rounded-2xl shadow-xl w-full h-64 object-cover translate-y-6 hover:scale-[1.02] transition-transform duration-300 border border-slate-200">
+                    </div>
+                    <!-- Decorative Badge -->
+                    <div class="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-gradient-to-r from-brand-green to-emerald-700 p-0.5 rounded-2xl shadow-2xl">
+                        <div class="bg-white px-6 py-3 rounded-2xl flex items-center gap-3">
+                            <i class="fa-solid fa-award text-brand-gold text-2xl"></i>
+                            <div>
+                                <div class="text-xs text-slate-500">Uy Tín & Chất Lượng</div>
+                                <div class="text-sm font-bold text-slate-900">Đặc Sản Lẩu Mực #1 Đại Lãnh</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Flagship Speciality Showcase -->
+    <section id="flagship" class="py-24 bg-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-brand-green font-bold text-sm tracking-widest uppercase">Món Ăn Nổi Bật</span>
+                <h2 class="font-serif text-3xl sm:text-5xl font-bold text-slate-900 mt-2">Đặc Sản & Món Ngon Cây Sanh</h2>
+                <p class="text-slate-600 mt-4 text-base">
+                    Phục vụ nhanh chóng, không gian rộng rãi, thoáng mát, thích hợp cho khách lẻ, gia đình và các đoàn du lịch đông người.
+                </p>
+            </div>
+
+            <!-- Highlights Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Highlight Card 1 -->
+                <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden group hover:border-brand-green/50 transition-all duration-300 shadow-md">
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&q=80&w=600" 
+                             alt="Lẩu Mực Đại Lãnh" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute top-4 right-4 bg-brand-red text-white font-bold text-xs px-3 py-1.5 rounded-full shadow">
+                            SPECIALITY #1
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-slate-900 group-hover:text-brand-green transition-colors">Lẩu Mực Đại Lãnh Thượng Hạng</h3>
+                        <p class="text-slate-600 text-sm mt-2 leading-relaxed">
+                            Mực lá/mực ống tươi rói vừa cập bến. Nước dùng chua thanh đậm đà từ cà chua, thơm, gừng tươi và rau ăn kèm phong phú.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Highlight Card 2 -->
+                <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden group hover:border-brand-green/50 transition-all duration-300 shadow-md">
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80&w=600" 
+                             alt="Cơm Phần Gia Đình" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute top-4 right-4 bg-brand-green text-white font-bold text-xs px-3 py-1.5 rounded-full shadow">
+                            FAMILY MEAL
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-slate-900 group-hover:text-brand-green transition-colors">Cơm Phần & Món Ăn Bữa Chính</h3>
+                        <p class="text-slate-600 text-sm mt-2 leading-relaxed">
+                            Mâm cơm Việt tròn vị với cá kho tộ, canh chua cá bớp, tôm rim mặn, rau rừng luộc chấm kho quẹt chuẩn vị quê nhà.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Highlight Card 3 -->
+                <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden group hover:border-brand-green/50 transition-all duration-300 shadow-md">
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1559847844-5315695dadae?auto=format&fit=crop&q=80&w=600" 
+                             alt="Hải Sản Tươi Sống" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute top-4 right-4 bg-brand-gold text-white font-bold text-xs px-3 py-1.5 rounded-full shadow">
+                            FRESH SEAFOOD
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-slate-900 group-hover:text-brand-green transition-colors">Hải Sản Tươi Sống Chế Biến Theo Yêu Cầu</h3>
+                        <p class="text-slate-600 text-sm mt-2 leading-relaxed">
+                            Ghẹ xanh, tôm hùm, nướng mỡ hành, hấp sả, rang muối hột. Cam kết chế biến trực tiếp từ nguồn hải sản tươi sống.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Menu Showcase with Tabs -->
+    <section id="menu" class="py-24 bg-white border-t border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="text-brand-green font-bold text-sm tracking-widest uppercase">Thực Đơn Niêm Yết</span>
+                <h2 class="font-serif text-3xl sm:text-5xl font-bold text-slate-900 mt-2">Menu Quán Cơm & Lẩu Mực Cây Sanh</h2>
+                <p class="text-slate-600 mt-3 text-sm sm:text-base">Giá niêm yết rõ ràng - Phục vụ nhanh chóng - Đảm bảo vệ sinh an toàn thực phẩm</p>
+            </div>
+
+            <!-- Tab Buttons -->
+            <div class="flex justify-center mb-12">
+                <div class="inline-flex p-1.5 rounded-2xl bg-slate-100 border border-slate-200 overflow-x-auto max-w-full shadow-inner">
+                    <button onclick="switchTab('lau-muc')" id="tab-lau-muc" class="menu-tab px-6 py-3 rounded-xl font-bold text-sm transition-all duration-300 bg-brand-green text-white shadow-md">
+                        <i class="fa-solid fa-fire mr-2 text-amber-300"></i>Đặc Sản Lẩu Mực
+                    </button>
+                    <button onclick="switchTab('combo')" id="tab-combo" class="menu-tab px-6 py-3 rounded-xl font-bold text-sm transition-all duration-300 text-slate-600 hover:text-slate-900">
+                        <i class="fa-solid fa-users mr-2"></i>Set Combo Đoàn / Gia Đình
+                    </button>
+                    <button onclick="switchTab('haisan')" id="tab-haisan" class="menu-tab px-6 py-3 rounded-xl font-bold text-sm transition-all duration-300 text-slate-600 hover:text-slate-900">
+                        <i class="fa-solid fa-fish mr-2"></i>Hải Sản Gọi Món
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tab Content: Lẩu Mực Đặc Sản -->
+            <div id="content-lau-muc" class="tab-content grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Item 1 -->
+                <div class="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-200 hover:border-brand-green transition-colors shadow-sm">
+                    <img src="https://images.unsplash.com/photo-1543353071-873f17a7a088?auto=format&fit=crop&q=80&w=400" class="w-24 h-24 rounded-xl object-cover shrink-0" alt="Lẩu Mực Nhỏ">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-start">
+                            <h4 class="font-bold text-slate-900 text-lg">Lẩu Mực Đại Lãnh (Nhỏ - 2-3 người)</h4>
+                            <span class="text-brand-green font-serif font-bold text-lg">350.000đ</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1">Mực tươi, bún tươi, đĩa rau lẩu thập cẩm, nước lẩu gia truyền Cây Sanh.</p>
+                        <span class="inline-block mt-2 text-[10px] bg-red-100 text-brand-red px-2 py-0.5 rounded font-bold">Bán Chạy Nhất</span>
+                    </div>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-200 hover:border-brand-green transition-colors shadow-sm">
+                    <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&q=80&w=200" class="w-24 h-24 rounded-xl object-cover shrink-0" alt="Lẩu Mực Lớn">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-start">
+                            <h4 class="font-bold text-slate-900 text-lg">Lẩu Mực Thượng Hạng (Lớn - 4-6 người)</h4>
+                            <span class="text-brand-green font-serif font-bold text-lg">550.000đ</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1">Mực lá nguyên con cỡ lớn, bún, rau xanh vô tận, nước dùng chua ngọt thanh nhẹ.</p>
+                        <span class="inline-block mt-2 text-[10px] bg-emerald-100 text-brand-green px-2 py-0.5 rounded font-bold">Khuyên Dùng</span>
+                    </div>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-200 hover:border-brand-green transition-colors shadow-sm">
+                    <img src="https://images.unsplash.com/photo-1559847844-5315695dadae?auto=format&fit=crop&q=80&w=200" class="w-24 h-24 rounded-xl object-cover shrink-0" alt="Mực Hấp Hành Gừng">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-start">
+                            <h4 class="font-bold text-slate-900 text-lg">Mực Cơm Hấp Gừng Cây Sanh</h4>
+                            <span class="text-brand-green font-serif font-bold text-lg">220.000đ</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1">Mực cơm giòn ngọt hấp cùng hành lá, gừng sợi, chấm nước mắm gừng cay nhẹ.</p>
+                    </div>
+                </div>
+
+                <!-- Item 4 -->
+                <div class="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-200 hover:border-brand-green transition-colors shadow-sm">
+                    <img src="https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&q=80&w=200" class="w-24 h-24 rounded-xl object-cover shrink-0" alt="Mực Chiên Mắm">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-start">
+                            <h4 class="font-bold text-slate-900 text-lg">Mực Lá Chiên Nước Mắm Tỏi Ớt</h4>
+                            <span class="text-brand-green font-serif font-bold text-lg">250.000đ</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1">Mực lá cắt miếng chiên vàng giòn, áo sốt nước mắm nhỉ tỏi ớt đậm đà.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Content: Combo Đoàn -->
+            <div id="content-combo" class="tab-content hidden grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Combo 1 -->
+                <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200 relative shadow-sm">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-xl font-bold text-slate-900">Set Combo Gia Đình (4 - 5 Khách)</h4>
+                        <span class="text-brand-green font-bold text-xl font-serif">790.000đ</span>
+                    </div>
+                    <ul class="text-sm text-slate-600 space-y-2 mb-6">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-green text-xs"></i> 01 Nồi Lẩu Mực Đại Lãnh (Size Vừa)</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-green text-xs"></i> Cá bớp kho tộ đậm đà</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-green text-xs"></i> Tôm đất rang muối hột</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-green text-xs"></i> Rau muống xào tỏi + Cơm niêu thơm dẻo</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-green text-xs"></i> Trái cây tráng miệng theo mùa</li>
+                    </ul>
+                    <button onclick="openBookingModal('Combo Gia Đình')" class="w-full py-2.5 rounded-xl bg-slate-200 hover:bg-brand-green hover:text-white text-slate-800 text-sm font-bold transition-colors">Đặt Set Trực Tuyến</button>
+                </div>
+
+                <!-- Combo 2 -->
+                <div class="p-6 rounded-2xl bg-emerald-50/50 border border-brand-green/30 relative shadow-sm">
+                    <div class="absolute -top-3 right-4 bg-brand-gold text-white font-bold text-xs px-3 py-1 rounded-full shadow">TIẾT KIỆM 15%</div>
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-xl font-bold text-slate-900">Set Đoàn Du Lịch (8 - 10 Khách)</h4>
+                        <span class="text-brand-green font-bold text-xl font-serif">1.650.000đ</span>
+                    </div>
+                    <ul class="text-sm text-slate-600 space-y-2 mb-6">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-green text-xs"></i> 02 Nồi Lẩu Mực Đại Lãnh Thượng Hạng</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-green text-xs"></i> Ghẹ biển hấp sả (1.5 kg)</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-green text-xs"></i> Mực cơm chiên mắm nồng nàn</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-green text-xs"></i> Canh chua cá bớp + Cá thu chiên sốt cà</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-green text-xs"></i> Cơm trắng thùng lớn + Nước suối/Khăn lạnh</li>
+                    </ul>
+                    <button onclick="openBookingModal('Combo Đoàn')" class="w-full py-2.5 rounded-xl bg-brand-green hover:bg-brand-greenlight text-white text-sm font-bold transition-colors shadow">Đặt Set Trực Tuyến</button>
+                </div>
+            </div>
+
+            <!-- Tab Content: Hải Sản Gọi Món -->
+            <div id="content-haisan" class="tab-content hidden grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-200 shadow-sm">
+                    <img src="https://images.unsplash.com/photo-1559847844-5315695dadae?auto=format&fit=crop&q=80&w=200" class="w-24 h-24 rounded-xl object-cover shrink-0" alt="Ghẹ xanh">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-lg">Ghẹ Xanh Đại Lãnh Hấp Sả</h4>
+                        <span class="text-brand-green font-serif font-bold text-lg">Theo thời giá (kg)</span>
+                        <p class="text-xs text-slate-500 mt-1">Ghẹ tươi bao chắc thịt, gạch béo ngậy chấm muối tiêu chanh.</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-200 shadow-sm">
+                    <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&q=80&w=200" class="w-24 h-24 rounded-xl object-cover shrink-0" alt="Tôm Hùm">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-lg">Tôm Hùm Nướng Mỡ Hành / Phô Mai</h4>
+                        <span class="text-brand-green font-serif font-bold text-lg">Theo thời giá (kg)</span>
+                        <p class="text-xs text-slate-500 mt-1">Tôm hùm bông, tôm hùm xanh đánh bắt tự nhiên.</p>
+                    </div>
+                </div>
+
+                <!-- Món mới 1 -->
+                <div class="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-200 shadow-sm">
+                    <img src="https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&q=80&w=200" class="w-24 h-24 rounded-xl object-cover shrink-0" alt="Món hải sản 1">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-lg">Cá Biển Tươi Nướng Muối Ớt</h4>
+                        <span class="text-brand-green font-serif font-bold text-lg">280.000đ</span>
+                        <p class="text-xs text-slate-500 mt-1">Cá tươi đánh bắt từ vùng biển Đại Lãnh, nướng than hồng cay thơm.</p>
+                    </div>
+                </div>
+
+                <!-- Món mới 2 -->
+                <div class="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-200 shadow-sm">
+                    <img src="https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&q=80&w=200" class="w-24 h-24 rounded-xl object-cover shrink-0" alt="Món hải sản 2">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-lg">Hàu Sữa Nướng Mỡ Hành / Phô Mai</h4>
+                        <span class="text-brand-green font-serif font-bold text-lg">120.000đ (Đĩa 6 con)</span>
+                        <p class="text-xs text-slate-500 mt-1">Hàu sữa béo ngậy phủ mỡ hành đậu phộng hoặc sốt phô mai béo ngậy.</p>
+                    </div>
+                </div>
+
+                <!-- Món mới 3 -->
+                <div class="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-200 shadow-sm">
+                    <img src="https://images.unsplash.com/photo-1565680314444-2451515c0e27?auto=format&fit=crop&q=80&w=200" class="w-24 h-24 rounded-xl object-cover shrink-0" alt="Món hải sản 3">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-lg">Bạch Tuộc Nướng Sate Cay</h4>
+                        <span class="text-brand-green font-serif font-bold text-lg">200.000đ</span>
+                        <p class="text-xs text-slate-500 mt-1">Bạch tuộc giòn sần sật ướp sốt sate đậm đà nướng chín thơm lừng.</p>
+                    </div>
+                </div>
+
+                <!-- Món mới 4 -->
+                <div class="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-200 shadow-sm">
+                    <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&q=80&w=200" class="w-24 h-24 rounded-xl object-cover shrink-0" alt="Món hải sản 4">
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-lg">Sò Huyết Cháy Tỏi Thơm Lừng</h4>
+                        <span class="text-brand-green font-serif font-bold text-lg">180.000đ</span>
+                        <p class="text-xs text-slate-500 mt-1">Sò huyết tươi ngọt thịt xào tỏi phi thơm phức, đậm đà vị giác.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Location & Contact Section -->
+    <section id="contact" class="py-24 bg-white border-t border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                
+                <!-- Info Column -->
+                <div class="space-y-8">
+                    <div>
+                        <span class="text-brand-green font-bold text-sm tracking-widest uppercase">Thông Tin Liên Hệ & Đặt Bàn</span>
+                        <h2 class="font-serif text-3xl sm:text-4xl font-bold text-slate-900 mt-2">Đón Tiếp Quý Khách Với Sự Tận Tâm</h2>
+                        <p class="text-slate-600 mt-4 text-sm">
+                            Quán Cơm & Lẩu Mực Cây Sanh hân hạnh đón tiếp khách lẻ, gia đình, đoàn du lịch và xe khách tuyến Bắc - Nam.
+                        </p>
+                    </div>
+
+                    <!-- Contact Detail Cards -->
+                    <div class="space-y-4">
+                        <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 flex items-start gap-4 shadow-sm">
+                            <div class="w-12 h-12 rounded-xl bg-red-100 text-brand-red flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-location-dot text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-900">Địa Chỉ Nhà Hàng</h4>
+                                <p class="text-slate-700 text-sm mt-1">Quốc lộ 1A, Xã Đại Lãnh, Huyện Vạn Ninh, Tỉnh Khánh Hòa</p>
+                                <p class="text-xs text-slate-500 mt-1">(Khu vực chân Đèo Cổ Mã / Chuyên Lẩu Mực Đại Lãnh)</p>
+                            </div>
+                        </div>
+
+                        <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 flex items-start gap-4 shadow-sm">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-100 text-brand-green flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-phone-volume text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-900">Hotline & Zalo Đặt Bàn</h4>
+                                <p class="text-brand-green font-bold text-lg mt-1">0988.220.608 - 0985.332.210</p>
+                                <div class="mt-2 flex items-center gap-3">
+                                    <a href="https://zalo.me/0988220608" target="_blank" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-cyan-600 hover:bg-cyan-700 text-white text-xs font-bold transition-colors">
+                                        <i class="fa-solid fa-comment-dots"></i> Chat Zalo (0988220608)
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 flex items-start gap-4 shadow-sm">
+                            <div class="w-12 h-12 rounded-xl bg-amber-100 text-brand-gold flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-clock text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-900">Giờ Mở Cửa</h4>
+                                <p class="text-slate-700 text-sm mt-1">06:00 AM - 23:00 PM (Mở cửa tất cả các ngày trong tuần & Lễ Tết)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Google Maps Direction Section -->
+                <div class="bg-slate-50 rounded-3xl border border-slate-200 p-6 flex flex-col justify-between shadow-sm">
+                    <div>
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-slate-900 text-lg flex items-center gap-2">
+                                <i class="fa-solid fa-map-location-dot text-brand-green"></i>
+                                <span>Google Maps Định Vị Chính Xác</span>
+                            </h3>
+                            <span class="text-xs bg-emerald-100 text-brand-green px-2.5 py-1 rounded-full font-bold">GPS Đại Lãnh</span>
+                        </div>
+                        <!-- Embedded Google Maps Simulation & Direct Link -->
+                        <div class="relative w-full h-72 rounded-2xl overflow-hidden border border-slate-300 shadow-inner">
+                            <img src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&q=80&w=800" 
+                                 alt="Google Maps Preview" 
+                                 class="w-full h-full object-cover filter brightness-95">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/70 via-transparent to-transparent flex items-end p-6">
+                                <div class="bg-white/95 backdrop-blur-md p-4 rounded-xl border border-slate-200 w-full flex items-center justify-between shadow-lg">
+                                    <div>
+                                        <div class="text-slate-900 font-bold text-sm">Quán Cơm & Lẩu Mực Cây Sanh</div>
+                                        <div class="text-xs text-slate-500">Đại Lãnh, Vạn Ninh, Khánh Hòa</div>
+                                    </div>
+                                    <a href="https://www.google.com/maps/search/?api=1&query=Quán+Cơm+Lẩu+Mực+Cây+Sanh+Đại+Lãnh+Vạn+Ninh+Khánh+Hòa" target="_blank" class="px-4 py-2 bg-brand-green text-white text-xs font-bold rounded-lg hover:bg-brand-greenlight transition-colors shadow flex items-center gap-1.5 shrink-0">
+                                        <i class="fa-solid fa-diamond-turn-right"></i> Mở Google Maps
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-slate-200 text-center">
+                        <p class="text-xs text-slate-500">Bấm vào nút <strong class="text-slate-800">"Mở Google Maps"</strong> để ứng dụng bản đồ Google trên điện thoại hoặc máy tính tự động định vị và chỉ đường chính xác tận cửa quán.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-300 py-12 text-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <!-- Brand -->
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-brand-red via-brand-green to-brand-gold p-0.5 shadow">
+                        <div class="w-full h-full bg-white rounded-full flex items-center justify-center">
+                            <i class="fa-solid fa-tree text-brand-green text-sm"></i>
+                        </div>
+                    </div>
+                    <span class="font-serif font-bold text-white text-lg tracking-wider">CÂY SANH</span>
+                </div>
+
+                <!-- Copyright -->
+                <div class="text-center md:text-left text-xs text-slate-400">
+                    © 2026 Quán Cơm & Lẩu Mực Cây Sanh. Hotline: 0988.220.608 - 0985.332.210. Quốc lộ 1A, Đại Lãnh, Vạn Ninh, Khánh Hòa.
+                </div>
+
+                <!-- Social Icons -->
+                <div class="flex gap-4">
+                    <a href="https://zalo.me/0988220608" target="_blank" class="w-9 h-9 rounded-full bg-cyan-600 flex items-center justify-center text-white hover:bg-cyan-700 transition-colors" title="Chat Zalo"><i class="fa-solid fa-comment-dots"></i></a>
+                    <a href="#" class="w-9 h-9 rounded-full bg-slate-800 flex items-center justify-center text-slate-300 hover:text-white hover:bg-brand-green transition-colors"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="w-9 h-9 rounded-full bg-slate-800 flex items-center justify-center text-slate-300 hover:text-white hover:bg-brand-green transition-colors"><i class="fa-brands fa-tiktok"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- NÚT ZALO NỔI (FLOATING ZALO BUTTON) -->
+    <div class="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-2">
+        <a href="https://zalo.me/0988220608" target="_blank" class="zalo-float-btn w-14 h-14 rounded-full bg-cyan-600 text-white flex items-center justify-center text-2xl shadow-2xl hover:bg-cyan-700 transition-transform hover:scale-110" title="Nhắn tin Zalo với quán">
+            <i class="fa-solid fa-comment-dots"></i>
+        </a>
+    </div>
+
+    <!-- Online Booking Modal -->
+    <div id="bookingModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
+        <div class="bg-white border border-slate-200 rounded-3xl max-w-lg w-full p-6 sm:p-8 relative shadow-2xl animate-in fade-in zoom-in duration-200">
+            <!-- Close Button -->
+            <button onclick="closeBookingModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 p-2">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+
+            <div class="mb-6">
+                <span class="text-brand-green font-bold text-xs uppercase tracking-widest">ĐẶT BÀN & KẾT NỐI ZALO</span>
+                <h3 class="font-serif text-2xl font-bold text-slate-900 mt-1">Đặt Bàn Tại Cây Sanh</h3>
+                <p class="text-xs text-slate-500 mt-1">Hệ thống sẽ tự động mở Zalo để gửi thông tin đặt bàn trực tiếp cho quán (Hotline: 0988.220.608).</p>
+            </div>
+
+            <!-- Form -->
+            <form id="bookingForm" onsubmit="handleBooking(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Họ và Tên Khách Hàng *</label>
+                    <input type="text" id="cusName" required placeholder="Nguyễn Văn A" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm focus:outline-none focus:border-brand-green">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Số Điện Thoại / Zalo *</label>
+                        <input type="tel" id="cusPhone" required placeholder="0988 220 608" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm focus:outline-none focus:border-brand-green">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Số Lượng Khách *</label>
+                        <select id="cusGuests" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm focus:outline-none focus:border-brand-green">
+                            <option value="1 - 2 Khách">1 - 2 Khách</option>
+                            <option value="3 - 5 Khách">3 - 5 Khách</option>
+                            <option value="6 - 10 Khách">6 - 10 Khách</option>
+                            <option value="Đoàn Du Lịch (>10 Khách)">Đoàn Du Lịch (>10 Khách)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Ngày Đến</label>
+                        <input type="date" id="cusDate" required class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm focus:outline-none focus:border-brand-green">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Giờ Dự Kiến</label>
+                        <input type="time" id="cusTime" required class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm focus:outline-none focus:border-brand-green">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Ghi Chú Đặc Biệt / Chọn Set Combo</label>
+                    <textarea id="bookingNote" rows="2" placeholder="Ví dụ: Đặt sẵn 1 nồi Lẩu Mực lớn, phục vụ nhanh cho đoàn xe khách..." class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm focus:outline-none focus:border-brand-green"></textarea>
+                </div>
+
+                <button type="submit" class="w-full py-4 rounded-xl bg-cyan-600 hover:bg-cyan-700 text-white font-bold shadow-lg shadow-cyan-600/30 transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-comment-dots text-lg"></i>
+                    <span>Gửi Thông Tin Đặt Bàn Qua Zalo</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Interactive JavaScript -->
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Interactive Menu Tab Switching
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            document.querySelectorAll('.menu-tab').forEach(btn => {
+                btn.classList.remove('bg-brand-green', 'text-white', 'shadow-md');
+                btn.classList.add('text-slate-600');
+            });
+            document.getElementById('content-' + tabId).classList.remove('hidden');
+            const activeBtn = document.getElementById('tab-' + tabId);
+            activeBtn.classList.add('bg-brand-green', 'text-white', 'shadow-md');
+            activeBtn.classList.remove('text-slate-600');
+        }
+
+        // Booking Modal Management
+        function openBookingModal(presetNote = '') {
+            const modal = document.getElementById('bookingModal');
+            const noteInput = document.getElementById('bookingNote');
+            if (presetNote) {
+                noteInput.value = 'Đặt trước: ' + presetNote;
+            }
+            modal.classList.remove('hidden');
+        }
+
+        function closeBookingModal() {
+            document.getElementById('bookingModal').classList.add('hidden');
+        }
+
+        // TÍNH NĂNG KẾT NỐI KHÁCH HÀNG TỰ ĐỘNG QUA ZALO KHI ĐẶT BÀN
+        function handleBooking(e) {
+            e.preventDefault();
+            
+            // Lấy dữ liệu từ form
+            const name = document.getElementById('cusName').value;
+            const phone = document.getElementById('cusPhone').value;
+            const guests = document.getElementById('cusGuests').value;
+            const date = document.getElementById('cusDate').value;
+            const time = document.getElementById('cusTime').value;
+            const note = document.getElementById('bookingNote').value;
+
+            // Tạo nội dung tin nhắn tự động gửi cho quán
+            const message = `Xin chào Quán Cơm & Lẩu Mực Cây Sanh! Tôi muốn đặt bàn:\n` +
+                            `- Họ tên: ${name}\n` +
+                            `- Số điện thoại: ${phone}\n` +
+                            `- Số lượng: ${guests}\n` +
+                            `- Thời gian: ${time} ngày ${date}\n` +
+                            `- Ghi chú: ${note || 'Không có'}`;
+
+            // Mã hóa nội dung tin nhắn để đưa vào URL Zalo chat trực tiếp (Zalo số 0988220608)
+            const encodedMessage = encodeURIComponent(message);
+            const zaloUrl = `https://zalo.me/0988220608?text=${encodedMessage}`;
+
+            // Thông báo và chuyển hướng sang ứng dụng/web Zalo của quán
+            alert('Cảm ơn quý khách ' + name + '! Hệ thống sẽ chuyển hướng sang Zalo để gửi thông tin đặt bàn ngay lập tức cho bộ phận tiếp đón.');
+            
+            // Mở link Zalo kết nối trực tiếp với khách
+            window.open(zaloUrl, '_blank');
+            closeBookingModal();
+        }
+    </script>
+</body>
+</html>
